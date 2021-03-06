@@ -45,6 +45,7 @@ public class Config {
 		defaultProps.put("contourColorMap", "viridis");
 		defaultProps.put("contourLineWidth", "0.1");
 		defaultProps.put("colorBarScale", "0.5");
+		defaultProps.put("plotPaddingPercentage", "0.1");
 		defaultProps.put("imageDPI", "300");
 		defaultProps.put("renderSVG", "false");
 		refreshConfig();
@@ -136,6 +137,10 @@ public class Config {
 	
 	public static double getColorBarScale() {
 		return Double.parseDouble(props.getProperty("colorBarScale"));
+	}
+	
+	public static double getPlotPaddingPercentage() {
+		return Double.parseDouble(props.getProperty("plotPaddingPercentage"));
 	}
 	
 	public static double getImageDPI() {
