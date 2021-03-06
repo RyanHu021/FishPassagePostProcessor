@@ -20,7 +20,7 @@ public class RenderTask {
 			return null;
 		}
 		Map<String, File> results = new HashMap<String, File>();
-		int size = results.size();
+		int size = renderQueue.size();
 		RenderItem current;
 		PythonExecutor py;
 

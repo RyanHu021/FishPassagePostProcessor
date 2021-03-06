@@ -45,7 +45,7 @@ public class Config {
 		defaultProps.put("contourColorMap", "viridis");
 		defaultProps.put("contourLineWidth", "0.1");
 		defaultProps.put("colorBarScale", "0.5");
-		defaultProps.put("plotPaddingPercentage", "0.1");
+		defaultProps.put("plotPaddingPercentage", "0.05");
 		defaultProps.put("imageDPI", "300");
 		defaultProps.put("renderSVG", "false");
 		refreshConfig();
