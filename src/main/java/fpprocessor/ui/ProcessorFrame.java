@@ -30,11 +30,8 @@ import fpprocessor.graphics.RenderItem;
 public class ProcessorFrame extends JFrame {
 
 	private static final long serialVersionUID = 3741432415089980546L;
-	// public static final String DEFAULT_FC_DIRECTORY =
-	// System.getProperty("user.home") + System.getProperty("file.separator") +
-	// "Documents" + System.getProperty("file.separator");
 	public static final String DEFAULT_FC_DIRECTORY = System.getProperty("user.home")
-			+ "\\Documents\\IB Comp Sci\\HL IA Project\\";
+			+ System.getProperty("file.separator") + "Documents" + System.getProperty("file.separator");
 	private InitPanel initPanel;
 	private NewConditionPanel newPanel;
 	private ViewConditionPanel viewPanel;
@@ -134,8 +131,8 @@ public class ProcessorFrame extends JFrame {
 					String withImage = current.hasImage() ? "Yes" : "No";
 					conditionsTable.addRow(new Object[] { current.getName(), current.getElementsSize(),
 							current.getNodesSize(), current.getNode(0).getTimestampsSize(), withImage });
-					ProgramLogger.log(getClass(), ProgramLogger.INFO,
-							"Imported condition " + current.getName() + " from " + fc.getSelectedFile().getAbsolutePath());
+					ProgramLogger.log(getClass(), ProgramLogger.INFO, "Imported condition " + current.getName()
+							+ " from " + fc.getSelectedFile().getAbsolutePath());
 				} catch (IOException | ClassNotFoundException e1) {
 					ProgramLogger.showErrorDialog(this.getClass(), initPanel,
 							"Could not import condition " + fc.getSelectedFile().getAbsolutePath());
@@ -329,7 +326,8 @@ public class ProcessorFrame extends JFrame {
 				try {
 					cm.readGeorefFile(file, current);
 				} catch (IOException | NumberFormatException e1) {
-					ProgramLogger.showErrorDialog(cm.getClass(), newPanel, "Invalid world file " + file.getAbsolutePath());
+					ProgramLogger.showErrorDialog(cm.getClass(), newPanel,
+							"Invalid world file " + file.getAbsolutePath());
 					return;
 				}
 				newPanel.getLblSelWorld().setText("<html>Selected World File: " + file.getAbsolutePath() + "</html>");
@@ -436,8 +434,7 @@ public class ProcessorFrame extends JFrame {
 
 			if (isInteger(viewPanel.getTxtFieldTime().getText())) {
 				int time = Integer.parseInt(viewPanel.getTxtFieldTime().getText());
-				if (time >= 0 && time < current.getNode(0)
-						.getTimestampsSize()) {
+				if (time >= 0 && time < current.getNode(0).getTimestampsSize()) {
 					for (PropertyType type : toRender) {
 						RenderItem item = new RenderItem(current, time, type);
 						queueFrame.add(item);
@@ -457,7 +454,7 @@ public class ProcessorFrame extends JFrame {
 			if (queueFrame == null || !queueFrame.isVisible()) {
 				queueFrame = new RenderQueueFrame();
 			}
-			
+
 			for (int i = 0; i < current.getNode(0).getTimestampsSize(); i++) {
 				for (PropertyType type : PropertyType.values()) {
 					RenderItem item = new RenderItem(current, i, type);
@@ -485,8 +482,8 @@ public class ProcessorFrame extends JFrame {
 					out.writeObject(current);
 					out.close();
 					file.close();
-					ProgramLogger.log(getClass(), ProgramLogger.INFO,
-							"Exported condition " + current.getName() + " to " + fc.getSelectedFile().getAbsolutePath());
+					ProgramLogger.log(getClass(), ProgramLogger.INFO, "Exported condition " + current.getName() + " to "
+							+ fc.getSelectedFile().getAbsolutePath());
 				} catch (IOException e1) {
 					ProgramLogger.showErrorDialog(this.getClass(), viewPanel,
 							"Could not export condition " + current.getName());
