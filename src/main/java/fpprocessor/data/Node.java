@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.data;
+package fpprocessor.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ public class Node implements Serializable  {
 	private double z;
 	private int timestampsSize;
 	
-	// [change to custom array or linked list implementation]
 	private List<Timestamp> timestamps;
 
 	public Node(int id, double x, double y, double z) {

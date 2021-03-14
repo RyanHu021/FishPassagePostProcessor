@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.ui;
+package fpprocessor.ui;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -20,12 +20,12 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
-import hu.ryan.fpprocessor.Config;
-import hu.ryan.fpprocessor.ProgramLogger;
-import hu.ryan.fpprocessor.data.Condition;
-import hu.ryan.fpprocessor.data.ConditionsManager;
-import hu.ryan.fpprocessor.data.PropertyType;
-import hu.ryan.fpprocessor.graphics.RenderItem;
+import fpprocessor.Config;
+import fpprocessor.ProgramLogger;
+import fpprocessor.data.Condition;
+import fpprocessor.data.ConditionsManager;
+import fpprocessor.data.PropertyType;
+import fpprocessor.graphics.RenderItem;
 
 public class ProcessorFrame extends JFrame {
 
@@ -83,8 +83,6 @@ public class ProcessorFrame extends JFrame {
 	public void resetViewPanel(Condition condition) {
 		viewPanel = new ViewConditionPanel(condition);
 		viewPanel.getBtnClose().addActionListener(new ViewPanelBtnCloseActionListener());
-		viewPanel.getBtnWord().addActionListener(new ViewPanelBtnWordActionListener());
-		viewPanel.getBtnPDF().addActionListener(new ViewPanelBtnPDFActionListener());
 		viewPanel.getBtnExport().addActionListener(new ViewPanelBtnExportActionListener());
 		viewPanel.getBtnAll().addActionListener(new ViewPanelBtnAllActionListener());
 		viewPanel.getBtnSelTime().addActionListener(new ViewPanelBtnSelTimeActionListener());
@@ -494,16 +492,6 @@ public class ProcessorFrame extends JFrame {
 							"Could not export condition " + current.getName());
 				}
 			}
-		}
-	}
-
-	private class ViewPanelBtnPDFActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-		}
-	}
-
-	private class ViewPanelBtnWordActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
 		}
 	}
 

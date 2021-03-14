@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.ui;
+package fpprocessor.ui;
 
 import java.awt.Dimension;
 

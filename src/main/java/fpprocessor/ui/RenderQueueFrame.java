@@ -1,11 +1,9 @@
-package hu.ryan.fpprocessor.ui;
+package fpprocessor.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +20,10 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
-import hu.ryan.fpprocessor.ProgramLogger;
-import hu.ryan.fpprocessor.file.POIWriter;
-import hu.ryan.fpprocessor.graphics.RenderItem;
-import hu.ryan.fpprocessor.graphics.RenderTask;
+import fpprocessor.ProgramLogger;
+import fpprocessor.file.POIWriter;
+import fpprocessor.graphics.RenderItem;
+import fpprocessor.graphics.RenderTask;
 
 public class RenderQueueFrame extends javax.swing.JFrame {
 
@@ -152,14 +148,7 @@ public class RenderQueueFrame extends javax.swing.JFrame {
 
 					if (fc.showSaveDialog(jPanel2) == JFileChooser.APPROVE_OPTION) {
 						File file = fc.getSelectedFile();
-						try {
-							POIWriter.writeWordReport(file, imgMap);
-							ProgramLogger.log(getClass(), ProgramLogger.INFO,
-									"Exported report " + file.getAbsolutePath());
-						} catch (IOException | InvalidFormatException e1) {
-							ProgramLogger.log(getClass(), ProgramLogger.INFO,
-									"Could not export report " + file.getAbsolutePath());
-						}
+						POIWriter.writeWordReport(file, imgMap);
 					}
 				}
 			} catch (IOException e1) {

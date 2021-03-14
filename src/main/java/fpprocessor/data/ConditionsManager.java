@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.data;
+package fpprocessor.data;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,13 +7,14 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
+import fpprocessor.ProgramLogger;
 import io.jhdf.HdfFile;
 import io.jhdf.api.Dataset;
 import io.jhdf.exceptions.HdfException;
-import io.jhdf.exceptions.HdfInvalidPathException;
 
 public class ConditionsManager {
 
@@ -37,15 +38,11 @@ public class ConditionsManager {
 		}
 		return conditions.get(name);
 	}
-	
+
 	public void removeCondition(String name) {
 		conditions.remove(name);
 	}
 
-	// check if condition is empty
-	// check if path is real
-	// check if path really leads to 2d array
-	// check if elements point to all the nodes
 	public boolean readMeshFile(File file, String nodePath, String elementPath, Condition condition) {
 		HdfFile hdf;
 		Dataset nodeData;
@@ -54,7 +51,9 @@ public class ConditionsManager {
 			hdf = new HdfFile(file);
 			nodeData = hdf.getDatasetByPath(nodePath);
 			elementData = hdf.getDatasetByPath(elementPath);
+			ProgramLogger.log(getClass(), ProgramLogger.INFO, "Opened mesh file: " + file.getAbsolutePath());
 		} catch (HdfException e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to open mesh file: " + file.getAbsolutePath());
 			return false;
 		}
 
@@ -66,13 +65,17 @@ public class ConditionsManager {
 					id++;
 				}
 			} else {
+				ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read nodes at path: " + nodePath);
 				hdf.close();
 				return false;
 			}
 		} catch (Exception e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read nodes at path: " + nodePath);
 			hdf.close();
 			return false;
 		}
+		ProgramLogger.log(getClass(), ProgramLogger.INFO,
+				condition.getNodesSize() + " nodes read at path: " + nodePath);
 
 		int maxNode = 0;
 		int nodesSize = condition.getNodesSize();
@@ -81,7 +84,7 @@ public class ConditionsManager {
 				for (int[] element : (int[][]) elementData.getData()) {
 					Element temp = new Element();
 					for (int nodePointer : element) {
-						if (nodePointer != -1 && nodePointer -1 < nodesSize) {
+						if (nodePointer != -1 && nodePointer - 1 < nodesSize) {
 							temp.addNode(condition.getNode(nodePointer - 1));
 							maxNode = nodePointer - 1 > maxNode ? nodePointer - 1 : maxNode;
 						}
@@ -89,22 +92,26 @@ public class ConditionsManager {
 					condition.addElement(temp);
 				}
 				if (maxNode != nodesSize - 1) {
+					ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read elements at path: " + nodePath);
 					hdf.close();
 					return false;
 				}
 			} else {
+				ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read elements at path: " + nodePath);
 				hdf.close();
 				return false;
 			}
 		} catch (Exception e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read elements at path: " + nodePath);
 			hdf.close();
 			return false;
 		}
+		ProgramLogger.log(getClass(), ProgramLogger.INFO,
+				condition.getElementsSize() + " elements read at path: " + nodePath);
 		hdf.close();
 		return true;
 	}
 
-	// check if each value is the right size
 	public boolean readDataFile(File file, String depthPath, String wSELPath, String shearStressPath, String velPath,
 			Condition condition) {
 		HdfFile hdf;
@@ -118,16 +125,18 @@ public class ConditionsManager {
 			wSELData = hdf.getDatasetByPath(wSELPath);
 			shearStressData = hdf.getDatasetByPath(shearStressPath);
 			velData = hdf.getDatasetByPath(velPath);
+			ProgramLogger.log(getClass(), ProgramLogger.INFO, "Opened data file: " + file.getAbsolutePath());
 		} catch (HdfException e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to open data file: " + file.getAbsolutePath());
 			return false;
 		}
-		
-		
+
 		int timestamps;
 		int i = 0;
 		int j = 0;
 		try {
-			if (depthData.getDimensions()[1] == condition.nodesSize && depthData.getJavaType().equals(float.class)) {
+			if (depthData.getDimensions()[1] == condition.getNodesSize()
+					&& depthData.getJavaType().equals(float.class)) {
 				timestamps = depthData.getDimensions()[0];
 				for (float[] timestamp : (float[][]) depthData.getData()) {
 					for (double value : timestamp) {
@@ -139,16 +148,19 @@ public class ConditionsManager {
 					j = 0;
 				}
 			} else {
+				ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read depth at path: " + depthPath);
 				hdf.close();
 				return false;
 			}
 		} catch (Exception e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read depth at path: " + depthPath);
 			hdf.close();
 			return false;
 		}
-		
+		ProgramLogger.log(getClass(), ProgramLogger.INFO, "Depth read for " + timestamps + " timestamps at path: " + depthPath);
+
 		try {
-			if (wSELData.getDimensions()[0] == timestamps && wSELData.getDimensions()[1] == condition.nodesSize
+			if (wSELData.getDimensions()[0] == timestamps && wSELData.getDimensions()[1] == condition.getNodesSize()
 					&& wSELData.getJavaType().equals(float.class)) {
 				for (float[] timestamp : (float[][]) wSELData.getData()) {
 					for (double value : timestamp) {
@@ -159,18 +171,21 @@ public class ConditionsManager {
 					i++;
 				}
 			} else {
+				ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read WSEL at path: " + wSELPath);
 				hdf.close();
 				return false;
 			}
 		} catch (Exception e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read WSEL at path: " + wSELPath);
 			hdf.close();
 			return false;
 		}
+		ProgramLogger.log(getClass(), ProgramLogger.INFO, "WSEL read for " + timestamps + " timestamps at path: " + wSELPath);
 
 		i = 0;
 		try {
 			if (shearStressData.getDimensions()[0] == timestamps
-					&& shearStressData.getDimensions()[1] == condition.nodesSize
+					&& shearStressData.getDimensions()[1] == condition.getNodesSize()
 					&& shearStressData.getJavaType().equals(float.class)) {
 				for (float[] timestamp : (float[][]) shearStressData.getData()) {
 					for (double value : timestamp) {
@@ -181,17 +196,20 @@ public class ConditionsManager {
 					i++;
 				}
 			} else {
+				ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read shear stress at path: " + shearStressPath);
 				hdf.close();
 				return false;
 			}
 		} catch (Exception e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read shear stress at path: " + shearStressPath);
 			hdf.close();
 			return false;
 		}
+		ProgramLogger.log(getClass(), ProgramLogger.INFO, "Shear stress read for " + timestamps + " timestamps at path: " + shearStressPath);
 
 		i = 0;
 		try {
-			if (velData.getDimensions()[0] == timestamps && velData.getDimensions()[1] == condition.nodesSize
+			if (velData.getDimensions()[0] == timestamps && velData.getDimensions()[1] == condition.getNodesSize()
 					&& velData.getDimensions()[2] == 2 && velData.getJavaType().equals(float.class)) {
 				for (float[][] timestamp : (float[][][]) velData.getData()) {
 					for (float[] value : timestamp) {
@@ -202,27 +220,35 @@ public class ConditionsManager {
 					i++;
 				}
 			} else {
+				ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read velocity at path: " + velPath);
 				hdf.close();
 				return false;
 			}
 		} catch (Exception e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read velocity at path: " + velPath);
 			hdf.close();
 			return false;
 		}
-		
+		ProgramLogger.log(getClass(), ProgramLogger.INFO, "Velocity read for " + timestamps + " timestamps at path: " + velPath);
+
 		hdf.close();
-		//System.out.println(condition);
 		return true;
 	}
-	
+
 	public void readGeorefFile(File file, Condition condition) throws IOException, NumberFormatException {
-		double arr[];
+		double[] arr;
 		double width, height;
-		// 0 = xScale, 1 = ySkew, 2 = xSkew, 3 = yScale, 4 = x, 5 = y
-		arr = Files.lines(file.toPath()).mapToDouble(line -> Double.parseDouble(line)).toArray();
-		BufferedImage img = ImageIO.read(condition.getMapImage());
-		width = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1]) * img.getWidth();
-		height = Math.sqrt(arr[2] * arr[2] + arr[3] * arr[3]) * img.getHeight();
-		condition.setGeorefData(Arrays.asList(arr[4], arr[4] + width, arr[5] - height, arr[5]));
+		try (Stream<String> stream = Files.lines(file.toPath())) {
+			// 0 = xScale, 1 = ySkew, 2 = xSkew, 3 = yScale, 4 = x, 5 = y
+			arr = stream.mapToDouble(line -> Double.parseDouble(line)).toArray();
+			BufferedImage img = ImageIO.read(condition.getMapImage());
+			width = Math.sqrt(arr[0] * arr[0] + arr[1] * arr[1]) * img.getWidth();
+			height = Math.sqrt(arr[2] * arr[2] + arr[3] * arr[3]) * img.getHeight();
+			condition.setGeorefData(Arrays.asList(arr[4], arr[4] + width, arr[5] - height, arr[5]));
+		} catch (Exception e) {
+			ProgramLogger.log(getClass(), ProgramLogger.ERROR, "Unable to read world file: " + file.getAbsolutePath());
+			return;
+		}
+		ProgramLogger.log(getClass(), ProgramLogger.INFO, "Read world file: " + file.getAbsolutePath());
 	}
 }

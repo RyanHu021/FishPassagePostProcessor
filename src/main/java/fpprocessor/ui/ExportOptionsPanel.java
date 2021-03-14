@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.ui;
+package fpprocessor.ui;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;

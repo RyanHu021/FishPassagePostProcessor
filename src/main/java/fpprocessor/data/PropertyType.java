@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.data;
+package fpprocessor.data;
 
 public enum PropertyType {
 	SHEAR_STRESS("Shear Stress", "lbs/sq ft"), VELOCITY("Velocity Magnitude", "ft/s"), DEPTH("Flow Depth", "ft"), WSEL("Water Surface Elevation", "ft NAVD88");

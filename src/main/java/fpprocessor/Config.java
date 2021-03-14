@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor;
+package fpprocessor;
 
 import java.io.File;
 import java.io.FileReader;

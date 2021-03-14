@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.file;
+package fpprocessor.file;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,10 +16,11 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
+import fpprocessor.ProgramLogger;
+
 public class POIWriter {
 
-	public static void writeWordReport(File file, Map<String, File> imageMap)
-			throws IOException, InvalidFormatException {
+	public static void writeWordReport(File file, Map<String, File> imageMap) {
 		try (FileOutputStream out = new FileOutputStream(file)) {
 			XWPFDocument document = new XWPFDocument();
 
@@ -45,6 +46,10 @@ public class POIWriter {
 				run.addBreak(BreakType.PAGE);
 			}
 			document.write(out);
+			document.close();
+			ProgramLogger.log(POIWriter.class, ProgramLogger.INFO, "Exported Microsoft Word report: " + file.getAbsolutePath());
+		} catch (IOException | InvalidFormatException e) {
+			ProgramLogger.log(POIWriter.class, ProgramLogger.ERROR, "Unable to export Microsoft Word report: " + file.getAbsolutePath());
 		}
 	}
 }

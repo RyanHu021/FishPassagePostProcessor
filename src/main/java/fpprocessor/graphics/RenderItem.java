@@ -1,7 +1,7 @@
-package hu.ryan.fpprocessor.graphics;
+package fpprocessor.graphics;
 
-import hu.ryan.fpprocessor.data.Condition;
-import hu.ryan.fpprocessor.data.PropertyType;
+import fpprocessor.data.Condition;
+import fpprocessor.data.PropertyType;
 
 public class RenderItem {
 

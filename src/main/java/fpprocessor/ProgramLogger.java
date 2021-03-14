@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor;
+package fpprocessor;
 
 import java.awt.Component;
 import java.util.logging.Level;

@@ -1,16 +1,19 @@
-package hu.ryan.fpprocessor.graphics;
+package fpprocessor.graphics;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
 
-import hu.ryan.fpprocessor.Config;
-import hu.ryan.fpprocessor.ProgramLogger;
+import fpprocessor.Config;
+import fpprocessor.ProgramLogger;
 
 public class PythonExecutor {
 
@@ -46,23 +49,28 @@ public class PythonExecutor {
 		if (writeFile(file, commands.toString()) == false) {
 			return null;
 		}
+		
+		// create the ProcessBuilder
 		ProcessBuilder pb = new ProcessBuilder(pythonPath + "python", Config.getLocalScriptPath() + file.getName());
-		StringBuilder result = new StringBuilder();
 		pb.redirectErrorStream(true);
 		Process p = pb.start();
-		// log
+		ProgramLogger.log(getClass(), ProgramLogger.INFO, "Started Python Process: " + file.getAbsolutePath());
+		
+		// return the output
+		StringBuilder result = new StringBuilder();
 		BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line = "";
 		while ((line = br.readLine()) != null) {
 			result.append("Python Output: ").append(line).append("\n");
 		}
+		ProgramLogger.log(getClass(), ProgramLogger.INFO, "Finished Python Process: " + file.getAbsolutePath());
 		return result.toString();
 	}
 
 	public boolean writeFile(File file, String string) {
 		try (FileChannel channel = FileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)) {
 			byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
-			ByteBuffer buffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, bytes.length);
+			MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, bytes.length);
 			buffer.put(bytes);
 		} catch (IOException e) {
 			return false;

@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.data;
+package fpprocessor.data;
 
 import java.io.Serializable;
 

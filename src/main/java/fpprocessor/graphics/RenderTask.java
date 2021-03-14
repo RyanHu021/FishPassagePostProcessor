@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.graphics;
+package fpprocessor.graphics;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,23 +8,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hu.ryan.fpprocessor.Config;
-import hu.ryan.fpprocessor.ProgramLogger;
-import hu.ryan.fpprocessor.data.Element;
-import hu.ryan.fpprocessor.data.Node;
+import fpprocessor.Config;
+import fpprocessor.ProgramLogger;
+import fpprocessor.data.Element;
+import fpprocessor.data.Node;
 
 public class RenderTask {
 
 	public Map<String, File> render(List<RenderItem> renderQueue) throws IOException {
-		if (renderQueue.isEmpty()) {
-			return null;
-		}
 		Map<String, File> results = new HashMap<String, File>();
+		if (renderQueue.isEmpty()) {
+			return results;
+		}
 		int size = renderQueue.size();
-		RenderItem current;
 		PythonExecutor py;
 
-		// create output folders
+		// create output directories
 		File saveDir = new File(Config.getLocalRenderPath());
 		File saveDirSVG = new File(Config.getLocalRenderPath() + "svg/");
 		if (saveDir.mkdir()) {
@@ -39,8 +38,7 @@ public class RenderTask {
 		}
 
 		// while there are still RenderItems in the queue
-		while (!renderQueue.isEmpty()) {
-			current = renderQueue.get(0);
+		for (RenderItem current : renderQueue) {
 			
 			// create and set up a Python script
 			py = new PythonExecutor(Config.getPythonPath(),
@@ -167,15 +165,13 @@ public class RenderTask {
 			}
 
 			// show if there is only one RenderItem
-			System.out.println(size);
 			if (size == 1) {
 				py.addCommand("plt.show()");
 			}
 			String pyOut = py.run();
-			System.out.println(pyOut);
-			renderQueue.remove(0);
+			ProgramLogger.log(getClass(), ProgramLogger.INFO, pyOut);
 		}
-
+		renderQueue.clear();
 		return results;
 	}
 }

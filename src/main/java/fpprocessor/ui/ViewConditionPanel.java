@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.ui;
+package fpprocessor.ui;
 
 import java.awt.Dimension;
 
@@ -14,7 +14,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
-import hu.ryan.fpprocessor.data.Condition;
+import fpprocessor.data.Condition;
 
 public class ViewConditionPanel extends javax.swing.JPanel {
 
@@ -41,9 +41,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
         btnGroupRender = new ButtonGroup();
         jPanel1 = new JPanel();
         btnClose = new JButton();
-        jPanel2 = new JPanel();
-        btnPDF = new JButton();
-        btnWord = new JButton();
         jPanel5 = new JPanel();
         lblName = new JLabel();
         lblSelNode = new JLabel();
@@ -85,31 +82,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
             .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnClose)
-                .addContainerGap())
-        );
-
-        btnPDF.setText("Export to PDF");
-        btnPDF.setEnabled(false);
-
-        btnWord.setText("Export to Word");
-        btnWord.setEnabled(false);
-
-        GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnWord)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPDF)
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnWord)
-                    .addComponent(btnPDF))
                 .addContainerGap())
         );
 
@@ -279,8 +251,7 @@ public class ViewConditionPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(240, 240, 240)
                         .addComponent(filler1, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -304,9 +275,7 @@ public class ViewConditionPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
@@ -320,17 +289,14 @@ public class ViewConditionPanel extends javax.swing.JPanel {
     private JButton btnClose;
     private JButton btnExport;
     private ButtonGroup btnGroupRender;
-    private JButton btnPDF;
     private JButton btnSelTime;
     private JButton btnShow;
-    private JButton btnWord;
     private JCheckBox cbDepth;
     private JCheckBox cbSStress;
     private JCheckBox cbVel;
     private JCheckBox cbWSEL;
     private Box.Filler filler1;
     private JPanel jPanel1;
-    private JPanel jPanel2;
     private JPanel jPanel3;
     private JPanel jPanel4;
     private JPanel jPanel5;
@@ -346,7 +312,7 @@ public class ViewConditionPanel extends javax.swing.JPanel {
     private JLabel lblWSEL;
     private JTextField txtFieldNode;
     private JTextField txtFieldTime;
-    // End of variables declaration 
+    // End of variables declaration
 
 	public JButton getBtnAll() {
 		return btnAll;
@@ -360,20 +326,12 @@ public class ViewConditionPanel extends javax.swing.JPanel {
 		return btnGroupRender;
 	}
 
-	public JButton getBtnPDF() {
-		return btnPDF;
-	}
-
 	public JButton getBtnSelTime() {
 		return btnSelTime;
 	}
 	
 	public JButton getBtnShow() {
 		return btnShow;
-	}
-
-	public JButton getBtnWord() {
-		return btnWord;
 	}
 
 	public JButton getBtnExport() {

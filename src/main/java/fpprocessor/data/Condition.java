@@ -1,4 +1,4 @@
-package hu.ryan.fpprocessor.data;
+package fpprocessor.data;
 
 import java.io.File;
 import java.io.Serializable;
@@ -8,16 +8,15 @@ import java.util.List;
 public class Condition implements Serializable {
 	
 	private static final long serialVersionUID = -856630095346247511L;
-	// [change to custom array/linked list or map implementation]
 	private List<Node> nodes;
 	private List<Element> elements;
 	
-	String name;
-	int nodesSize;
-	int elementsSize;
-	File mapImage;
-	List<Double> georefData;
-	boolean hasImage;
+	private String name;
+	private int nodesSize;
+	private int elementsSize;
+	private File mapImage;
+	private List<Double> georefData;
+	private boolean hasImage;
 	
 	public Condition() {
 		nodes = new ArrayList<Node>();
@@ -46,11 +45,6 @@ public class Condition implements Serializable {
 		return nodes.get(index);
 	}
 	
-	public List<Timestamp> getTimestampsAtTime(int time) {
-		return null;
-	}
-	
-	// [change to allow setting of node id]
 	public void addNode(Node node) {
 		nodesSize++;
 		nodes.add(node);
