@@ -49,7 +49,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
         lblWSEL = new JLabel();
         lblVel = new JLabel();
         lblShearStress = new JLabel();
-        lblImgRendered = new JLabel();
         btnExport = new JButton();
         jPanel3 = new JPanel();
         lblNode = new JLabel();
@@ -101,7 +100,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
 
         lblShearStress.setText("Shear Stress: ");
 
-        lblImgRendered.setText("Images Rendered: ");
 
         btnExport.setText("Export Condition");
 
@@ -121,7 +119,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
                     .addComponent(lblVel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(lblImgRendered)
                             .addComponent(lblName))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(lblShearStress, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -144,7 +141,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblVel)
                 .addGap(18, 18, 18)
-                .addComponent(lblImgRendered)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnExport)
                 .addContainerGap())
@@ -301,7 +297,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
     private JPanel jPanel4;
     private JPanel jPanel5;
     private JLabel lblDepth;
-    private JLabel lblImgRendered;
     private JLabel lblName;
     private JLabel lblNode;
     private JLabel lblSelNode;
@@ -340,10 +335,6 @@ public class ViewConditionPanel extends javax.swing.JPanel {
 
 	public JLabel getLblDepth() {
 		return lblDepth;
-	}
-
-	public JLabel getLblImgRendered() {
-		return lblImgRendered;
 	}
 
 	public JLabel getLblSelNode() {
